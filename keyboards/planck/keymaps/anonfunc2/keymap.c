@@ -35,21 +35,21 @@ enum combos {
   // Left hand
   QW_TICK,
   WF_ESC,
-  CD_ENTER,
-  ZX_TAB,
+  XC_TAB,
+  ZX_SHIFT,
   // Right hand
   HCMA_MINUS,
-  DOTSLASH_QUOTE,
-  UY_ESC,
+  DOT_CMA_QUOTE,
+  UY_ENTER,
   YCLN_BSLASH,
 };
 
 const uint16_t PROGMEM qw_combo[] = {KC_Q, KC_W, COMBO_END};
 const uint16_t PROGMEM wf_combo[] = {KC_W, KC_F, COMBO_END};
-const uint16_t PROGMEM cd_combo[] = {KC_C, KC_D, COMBO_END};
+const uint16_t PROGMEM xc_combo[] = {KC_C, KC_X, COMBO_END};
 const uint16_t PROGMEM zx_combo[] = {KC_Z, KC_X, COMBO_END};
 const uint16_t PROGMEM hcma_combo[] = {KC_H, KC_COMMA, COMBO_END};
-const uint16_t PROGMEM dotslash_combo[] = {KC_DOT, KC_SLASH, COMBO_END};
+const uint16_t PROGMEM dot_cma_combo[] = {KC_DOT, KC_COMMA, COMBO_END};
 const uint16_t PROGMEM uy_combo[] = {KC_U, KC_Y, COMBO_END};
 const uint16_t PROGMEM ycln_combo[] = {KC_Y, KC_SCOLON, COMBO_END};
 
@@ -57,26 +57,26 @@ combo_t key_combos[COMBO_COUNT] = {
   // Left hand
   [QW_TICK] = COMBO(qw_combo, KC_GRAVE),
   [WF_ESC] = COMBO(wf_combo, KC_ESC),
-  [CD_ENTER] = COMBO(cd_combo, KC_ENTER),
-  [ZX_TAB] = COMBO(zx_combo, KC_TAB),
+  [XC_TAB] = COMBO(xc_combo, KC_TAB),
+  [ZX_SHIFT] = COMBO(zx_combo, KC_LSHIFT),
 
   // Right hand
   [HCMA_MINUS] = COMBO(hcma_combo, KC_MINUS),
-  [DOTSLASH_QUOTE] = COMBO(dotslash_combo, KC_QUOTE),
-  [UY_ESC] = COMBO(uy_combo, KC_ESC),
+  [DOT_CMA_QUOTE] = COMBO(dot_cma_combo, KC_QUOTE),
+  [UY_ENTER] = COMBO(uy_combo, KC_ENTER),
   [YCLN_BSLASH] = COMBO(ycln_combo, KC_BSLASH),
 };
 /* ## COMBOS
  * ## ,----------+---------+------+------.          ,------+------+----------+---------.
- * ## |    TICK  |   ESC   |      |      |          |      |      |    ESC   | BSLASH  |
+ * ## |    TICK  |   ESC   |      |      |          |      |      |   Enter  | BSLASH  |
  * ## |          |         |      |      |          |      |      |          |         |
  * ## |------+---+--+------+------+------|          +------+------+------+---+--+------|
  * ## |      |      |      |      |      |          |      |      |      |      |      |
  * ## |      |      |      |      |      |          |      |      |      |      |      |
- * ## |------+------+------+------+------|          +------+------+------+------+------|
- * ## |      |      |    ENTER    |      |          |      |   MINUS     |    QUOTE    |
- * ## |      |      |             |      |          |      |             |             |
- * ## `------+------+------+------+------|          +------+------+------+------+------'
+ * ## |------+------+------+------+------|          +------+------+---+--+------+------|
+ * ## |      |     Tab     |      |      |          |      |   MINUS  | QUOTE   |      |
+ * ## |   Shift     |      |      |      |          |      |          |         |      |
+ * ## `------+------+------+------+------|          +------+------+---+--+------+------'
  * ##               |      |      |      |          |      |      |      | 
  * ##               |      |      |      |          |      |      |      | 
  * ##               '------+------+------'          `------+------+------'
@@ -166,13 +166,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
       KC_NO, KC_NO, KC_NO, KC_NO, LT(_LOWER, KC_DELETE),       KC_NO, KC_NO, KC_TRNS, KC_MS_BTN1, KC_MS_BTN2, KC_NO, KC_NO
       ),
 
-/* ## Adjust (Lower + Raise)
- * ## ,----------------------------------.          ,----------------------------------.
+/* ## Adjust (Lower and Raise)
+ * ## ,------+------+------+------+------.          ,------+------+------+------+------.
  * ## |      |      |      |      |      |          |      |      |      |      |      |
  * ## |      |      |      |      |      |          |      |      |      |      |      |
  * ## |------+------+------+------+------|          +------+------+------+------+------|
- * ## |      |      |Scrn  |Talon |      |          |      |Tool  |      |      |      |
- * ## |      |      |Saver |      |      |          |      |Box   |      |      |      |
+ * ## |      |      |Scrn  |Talon |      |          |      | IDEs |      |      |      |
+ * ## |      |      |Saver |      |      |          |      |      |      |      |      |
  * ## |------+------+------+------+------|          +------+------+------+------+------|
  * ## |      |      |      |      |      |          |      |      |      |      |      |
  * ## |      |      |      |      |      |          |      |      |      |      |      |
@@ -194,55 +194,72 @@ extern rgb_config_t rgb_matrix_config;
 
 void keyboard_post_init_user(void) {
   rgb_matrix_enable();
+  rgblight_mode(1);
   steno_set_mode(STENO_MODE_GEMINI); // or STENO_MODE_BOLT
 }
 
-// #define HSV_WHITE 0, 0, 255
+#define HSV_WHITE 0, 0, 255
 
-// const uint8_t PROGMEM ledmap[][DRIVER_LED_TOTAL][3] = {
-//   [0] = {
-//         {HSV_RED}, {HSV_RED}, {HSV_RED}, {HSV_RED}, {OFF}, {OFF}, {HSV_RED}, {HSV_RED}, {HSV_RED}, {HSV_RED}, {HSV_RED}, {HSV_RED},
-//         {HSV_RED}, {HSV_RED}, {HSV_RED}, {HSV_RED}, {OFF}, {OFF}, {HSV_RED}, {HSV_RED}, {HSV_RED}, {HSV_RED}, {HSV_RED}, {HSV_RED},
-//         {HSV_RED}, {HSV_RED}, {HSV_RED}, {HSV_RED}, {OFF}, {OFF}, {HSV_RED}, {HSV_RED}, {HSV_RED}, {HSV_RED}, {HSV_RED}, {HSV_RED},
-//         {HSV_RED}, {HSV_RED}, {HSV_RED}, {HSV_RED},      {OFF},       {HSV_RED}, {HSV_RED}, {HSV_RED}, {HSV_RED}, {HSV_RED}, {HSV_RED}
-//     },
-//     [1] = {
-//         {HSV_BLUE}, {HSV_BLUE}, {HSV_BLUE}, {HSV_BLUE}, {OFF}, {OFF}, {HSV_BLUE}, {HSV_BLUE}, {HSV_BLUE}, {HSV_BLUE}, {HSV_BLUE}, {HSV_BLUE},
-//         {HSV_BLUE}, {HSV_BLUE}, {HSV_BLUE}, {HSV_BLUE}, {OFF}, {OFF}, {HSV_BLUE}, {HSV_BLUE}, {HSV_BLUE}, {HSV_BLUE}, {HSV_BLUE}, {HSV_BLUE},
-//         {HSV_BLUE}, {HSV_BLUE}, {HSV_BLUE}, {HSV_BLUE}, {OFF}, {OFF}, {HSV_BLUE}, {HSV_BLUE}, {HSV_BLUE}, {HSV_BLUE}, {HSV_BLUE}, {HSV_BLUE},
-//         {HSV_BLUE}, {HSV_BLUE}, {HSV_BLUE}, {HSV_BLUE},      {OFF},       {HSV_BLUE}, {HSV_BLUE}, {HSV_BLUE}, {HSV_BLUE}, {HSV_BLUE}, {HSV_BLUE}
-//     },
-// };
+const uint8_t PROGMEM ledmap[][DRIVER_LED_TOTAL][3] = {
+  [0] = {
+        {HSV_WHITE}, {HSV_WHITE}, {HSV_WHITE}, {HSV_WHITE}, {HSV_WHITE}, {OFF}, {OFF}, {HSV_WHITE}, {HSV_WHITE}, {HSV_WHITE}, {HSV_WHITE}, {HSV_WHITE},
+        {HSV_WHITE}, {HSV_WHITE}, {HSV_WHITE}, {HSV_WHITE}, {HSV_WHITE}, {OFF}, {OFF}, {HSV_WHITE}, {HSV_WHITE}, {HSV_WHITE}, {HSV_WHITE}, {HSV_WHITE},
+        {HSV_WHITE}, {HSV_WHITE}, {HSV_WHITE}, {HSV_WHITE}, {HSV_WHITE}, {OFF}, {OFF}, {HSV_WHITE}, {HSV_WHITE}, {HSV_WHITE}, {HSV_WHITE}, {HSV_WHITE},
+        {OFF}, {OFF}, {HSV_WHITE}, {HSV_WHITE},      {HSV_WHITE},       {OFF}, {HSV_WHITE}, {HSV_WHITE}, {HSV_WHITE}, {OFF}, {OFF}
+    },
+    [1] = {
+        {HSV_RED}, {HSV_RED}, {HSV_RED}, {HSV_RED}, {HSV_RED}, {OFF}, {OFF}, {HSV_RED}, {HSV_RED}, {HSV_RED}, {HSV_RED}, {HSV_RED},
+        {HSV_RED}, {HSV_RED}, {HSV_RED}, {HSV_RED}, {HSV_RED}, {OFF}, {OFF}, {HSV_RED}, {HSV_RED}, {HSV_RED}, {HSV_RED}, {HSV_RED},
+        {HSV_RED}, {HSV_RED}, {HSV_RED}, {HSV_RED}, {HSV_RED}, {OFF}, {OFF}, {HSV_RED}, {HSV_RED}, {HSV_RED}, {HSV_RED}, {HSV_RED},
+        {OFF}, {OFF}, {HSV_RED}, {HSV_RED},      {HSV_RED},       {OFF}, {HSV_RED}, {HSV_RED}, {HSV_RED}, {OFF}, {OFF}
+    },
+    [2] = {
+        {HSV_BLUE}, {HSV_BLUE}, {HSV_BLUE}, {HSV_BLUE}, {HSV_BLUE}, {OFF}, {OFF}, {HSV_BLUE}, {HSV_BLUE}, {HSV_BLUE}, {HSV_BLUE}, {HSV_BLUE},
+        {HSV_BLUE}, {HSV_BLUE}, {HSV_BLUE}, {HSV_BLUE}, {HSV_BLUE}, {OFF}, {OFF}, {HSV_BLUE}, {HSV_BLUE}, {HSV_BLUE}, {HSV_BLUE}, {HSV_BLUE},
+        {HSV_BLUE}, {HSV_BLUE}, {HSV_BLUE}, {HSV_BLUE}, {HSV_BLUE}, {OFF}, {OFF}, {HSV_BLUE}, {HSV_BLUE}, {HSV_BLUE}, {HSV_BLUE}, {HSV_BLUE},
+        {OFF}, {OFF}, {HSV_BLUE}, {HSV_BLUE},      {HSV_BLUE},       {OFF}, {HSV_BLUE}, {HSV_BLUE}, {HSV_BLUE}, {OFF}, {OFF}
+    },
+    [3] = {
+        {HSV_GREEN}, {HSV_GREEN}, {HSV_GREEN}, {HSV_GREEN}, {HSV_GREEN}, {OFF}, {OFF}, {HSV_GREEN}, {HSV_GREEN}, {HSV_GREEN}, {HSV_GREEN}, {HSV_GREEN},
+        {HSV_GREEN}, {HSV_GREEN}, {HSV_GREEN}, {HSV_GREEN}, {HSV_GREEN}, {OFF}, {OFF}, {HSV_GREEN}, {HSV_GREEN}, {HSV_GREEN}, {HSV_GREEN}, {HSV_GREEN},
+        {HSV_GREEN}, {HSV_GREEN}, {HSV_GREEN}, {HSV_GREEN}, {HSV_GREEN}, {OFF}, {OFF}, {HSV_GREEN}, {HSV_GREEN}, {HSV_GREEN}, {HSV_GREEN}, {HSV_GREEN},
+        {OFF}, {OFF}, {HSV_GREEN}, {HSV_GREEN},      {HSV_GREEN},       {OFF}, {HSV_GREEN}, {HSV_GREEN}, {HSV_GREEN}, {OFF}, {OFF}
+    },
 
-// void set_layer_color(int layer) {
-//   for (int i = 0; i < DRIVER_LED_TOTAL; i++) {
-//     HSV hsv = {
-//       .h = pgm_read_byte(&ledmap[layer][i][0]),
-//       .s = pgm_read_byte(&ledmap[layer][i][1]),
-//       .v = pgm_read_byte(&ledmap[layer][i][2]),
-//     };
-//     if (!hsv.h && !hsv.s && !hsv.v) {
-//         rgb_matrix_set_color( i, 0, 0, 0 );
-//     } else {
-//         RGB rgb = hsv_to_rgb( hsv );
-//         float f = (float)rgb_matrix_config.hsv.v / UINT8_MAX;
-//         rgb_matrix_set_color( i, f * rgb.r, f * rgb.g, f * rgb.b );
-//     }
-//   }
-// }
+};
+
+void set_layer_color(int layer) {
+  for (int i = 0; i < DRIVER_LED_TOTAL; i++) {
+    HSV hsv = {
+      .h = pgm_read_byte(&ledmap[layer][i][0]),
+      .s = pgm_read_byte(&ledmap[layer][i][1]),
+      .v = pgm_read_byte(&ledmap[layer][i][2]),
+    };
+    if (!hsv.h && !hsv.s && !hsv.v) {
+        rgb_matrix_set_color( i, 0, 0, 0 );
+    } else {
+        RGB rgb = hsv_to_rgb( hsv );
+        float f = (float)rgb_matrix_config.hsv.v / UINT8_MAX;
+        rgb_matrix_set_color( i, f * rgb.r, f * rgb.g, f * rgb.b );
+    }
+  }
+}
 
 void rgb_matrix_indicators_user(void) {
   if (g_suspend_state || keyboard_config.disable_layer_led) { return; }
   // This was auto-generated.  Why a switch statement here?
   switch (biton32(layer_state)) {
+    case 0:
+      set_layer_color(0);
+      break;
     case 1:
-      rgb_matrix_set_color_all(255, 0, 0);
+      set_layer_color(1);
       break;
     case 2:
-      rgb_matrix_set_color_all(0, 0, 255);
+      set_layer_color(2);
       break;
     case 3:
-      rgb_matrix_set_color_all(0, 255, 0);
+      set_layer_color(3);
       break;
    default:
     if (rgb_matrix_get_flags() == LED_FLAG_NONE)
