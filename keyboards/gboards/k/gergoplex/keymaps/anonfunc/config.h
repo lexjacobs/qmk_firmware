@@ -1,0 +1,9 @@
+#define COMBO_ALLOW_ACTION_KEYS 
+#define COMBO_VARIABLE_LEN
+
+// Both?
+// #define PERMISSIVE_HOLD
+#define IGNORE_MOD_TAP_INTERRUPT
+
+// Per key?
+#define TAPPING_FORCE_HOLD

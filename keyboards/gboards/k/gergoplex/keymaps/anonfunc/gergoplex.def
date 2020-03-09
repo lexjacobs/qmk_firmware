@@ -1,0 +1,34 @@
+// Gergoplex specfic combos 
+
+
+// ## COMBOS
+// ## ,-------------+------+------+------.          ,------+------+-------------+------.
+// ## |  Backtick   |      |      |      |          |      |      |   Enter     |      |
+// ## |      |     Esc     |      |      |          |      |      |      |  Backslash  |
+// ## |------+------+------+------+------|          +------+------+------+------+------|
+// ## |      |      |      |      |      |          |      |      |      |      |      |
+// ## |      |      |      |      |      |          |      |      |      |      |      |
+// ## |------+------+------+------+------|          +------+------+------+------+------|
+// ## |      |     Tab     |      |      |          |      |      |    Quote    |      |
+// ## |    Shift    |      |      |      |          |      |    Minus    |    Space    |
+// ## `------+------+------+------+------'          `------+------+------+------+------'
+// ##               ,------+------+------.          ,------+------+------.
+// ##               |      |      |      |          |      |      |      | 
+// ##               |      |      |      |          |      |      |      | 
+// ##               '------+------+------'          `------+------+------'
+
+// Left hand
+COMB(qw_combo, KC_GRAVE, KC_Q, KC_W)
+COMB(wf_combo, KC_ESC, KC_W, KC_F)
+COMB(xc_combo, KC_TAB, KC_X, KC_C)
+COMB(zx_combo, KC_LSHIFT, KC_Z, KC_X)
+
+// Right hand
+COMB(hcma_combo, KC_MINUS, KC_H, KC_COMMA)
+COMB(dot_cma_combo, KC_QUOTE, KC_DOT, KC_COMMA)
+COMB(uy_combo, KC_ENTER, KC_U, KC_Y)
+COMB(ycln_combo, KC_BSLASH, KC_Y, KC_SCOLON)
+COMB(slashdot_combo, KC_SPACE, KC_SLASH, KC_DOT)
+
+
+// SUBS(pasta, "I'd just like to interject for a moment.", KC_H, KC_J, KC_K, KC_L)
