@@ -3,21 +3,8 @@
 #include "muse.h"
 #endif
 #include "eeprom.h"
-// #include "keymap_nordic.h"
-// #include "keymap_german.h"
-#include "keymap_steno.h"
-// #include "keymap_french.h"
-// #include "keymap_spanish.h"
-// #include "keymap_hungarian.h"
-// #include "keymap_swedish.h"
-// #include "keymap_br_abnt2.h"
-// #include "keymap_canadian_multilingual.h"
-// #include "keymap_german_ch.h"
-// #include "keymap_jp.h"
 
-enum planck_keycodes {
-  RGB_SLD = EZ_SAFE_RANGE,
-};
+#include "keymap_steno.h"
 
 enum planck_layers {
   _BASE,
@@ -42,6 +29,7 @@ enum combos {
   DOT_CMA_QUOTE,
   UY_ENTER,
   YCLN_BSLASH,
+  SLASHDOT_SPACE,
 };
 
 const uint16_t PROGMEM qw_combo[] = {KC_Q, KC_W, COMBO_END};
@@ -52,6 +40,7 @@ const uint16_t PROGMEM hcma_combo[] = {KC_H, KC_COMMA, COMBO_END};
 const uint16_t PROGMEM dot_cma_combo[] = {KC_DOT, KC_COMMA, COMBO_END};
 const uint16_t PROGMEM uy_combo[] = {KC_U, KC_Y, COMBO_END};
 const uint16_t PROGMEM ycln_combo[] = {KC_Y, KC_SCOLON, COMBO_END};
+const uint16_t PROGMEM slashdot_combo[] = {KC_DOT, KC_SLASH, COMBO_END};
 
 combo_t key_combos[COMBO_COUNT] = {
   // Left hand
@@ -65,18 +54,19 @@ combo_t key_combos[COMBO_COUNT] = {
   [DOT_CMA_QUOTE] = COMBO(dot_cma_combo, KC_QUOTE),
   [UY_ENTER] = COMBO(uy_combo, KC_ENTER),
   [YCLN_BSLASH] = COMBO(ycln_combo, KC_BSLASH),
+  [SLASHDOT_SPACE] = COMBO(slashdot_combo, KC_SPACE)
 };
 /* ## COMBOS
- * ## ,----------+---------+------+------.          ,------+------+----------+---------.
- * ## |    TICK  |   ESC   |      |      |          |      |      |   Enter  | BSLASH  |
- * ## |          |         |      |      |          |      |      |          |         |
- * ## |------+---+--+------+------+------|          +------+------+------+---+--+------|
+ * ## ,-------------+------+------+------.          ,------+------+-------------+------.
+ * ## |  Backtick   |      |      |      |          |      |      |   Enter     |      |
+ * ## |      |     Esc     |      |      |          |      |      |      |  Backslash  |
+ * ## |------+------+------+------+------|          +------+------+------+------+------|
  * ## |      |      |      |      |      |          |      |      |      |      |      |
  * ## |      |      |      |      |      |          |      |      |      |      |      |
- * ## |------+------+------+------+------|          +------+------+---+--+------+------|
- * ## |      |     Tab     |      |      |          |      |   MINUS  | QUOTE   |      |
- * ## |   Shift     |      |      |      |          |      |          |         |      |
- * ## `------+------+------+------+------|          +------+------+---+--+------+------'
+ * ## |------+------+------+------+------|          +------+------+------+------+------|
+ * ## |      |     Tab     |      |      |          |      |      |    Quote    |      |
+ * ## |    Shift    |      |      |      |          |      |    Minus    |    Space    |
+ * ## `------+------+------+------+------|          +------+------+------+------+------'
  * ##               |      |      |      |          |      |      |      | 
  * ##               |      |      |      |          |      |      |      | 
  * ##               '------+------+------'          `------+------+------'
@@ -183,7 +173,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
   [_ADJUST] = LAYOUT_planck_grid(
       KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, 
-      KC_NO, KC_NO, HYPR(KC_BSPACE), HYPR(KC_TAB), KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, 
+      KC_NO, KC_NO, HYPR(KC_BSPACE), HYPR(KC_TAB), KC_NO, KC_NO, HYPR(KC_T), KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, 
       KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, 
       KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, RESET, KC_NO, KC_NO, KC_NO, RESET, KC_NO, KC_NO
       ),
@@ -267,87 +257,6 @@ void rgb_matrix_indicators_user(void) {
     break;
   }
 }
-
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-  switch (keycode) {
-    case RGB_SLD:
-      if (record->event.pressed) {
-        rgblight_mode(1);
-      }
-      return false;
-  }
-  return true;
-}
-
-#ifdef AUDIO_ENABLE
-bool muse_mode = false;
-uint8_t last_muse_note = 0;
-uint16_t muse_counter = 0;
-uint8_t muse_offset = 70;
-uint16_t muse_tempo = 50;
-
-void encoder_update(bool clockwise) {
-    if (muse_mode) {
-        if (IS_LAYER_ON(_RAISE)) {
-            if (clockwise) {
-                muse_offset++;
-            } else {
-                muse_offset--;
-            }
-        } else {
-            if (clockwise) {
-                muse_tempo+=1;
-            } else {
-                muse_tempo-=1;
-            }
-        }
-    } else {
-        if (clockwise) {
-        #ifdef MOUSEKEY_ENABLE
-            register_code(KC_MS_WH_DOWN);
-            unregister_code(KC_MS_WH_DOWN);
-        #else
-            register_code(KC_PGDN);
-            unregister_code(KC_PGDN);
-        #endif
-        } else {
-        #ifdef MOUSEKEY_ENABLE
-            register_code(KC_MS_WH_UP);
-            unregister_code(KC_MS_WH_UP);
-        #else
-            register_code(KC_PGUP);
-            unregister_code(KC_PGUP);
-        #endif
-        }
-    }
-}
-
-void matrix_scan_user(void) {
-#ifdef AUDIO_ENABLE
-    if (muse_mode) {
-        if (muse_counter == 0) {
-            uint8_t muse_note = muse_offset + SCALE[muse_clock_pulse()];
-            if (muse_note != last_muse_note) {
-                stop_note(compute_freq_for_midi_note(last_muse_note));
-                play_note(compute_freq_for_midi_note(muse_note), 0xF);
-                last_muse_note = muse_note;
-            }
-        }
-        muse_counter = (muse_counter + 1) % muse_tempo;
-    }
-#endif
-}
-
-bool music_mask_user(uint16_t keycode) {
-    switch (keycode) {
-    case RAISE:
-    case LOWER:
-        return false;
-    default:
-        return true;
-    }
-}
-#endif
 
 uint32_t layer_state_set_user(uint32_t state) {
     return update_tri_layer_state(state, _LOWER, _RAISE, _ADJUST);
