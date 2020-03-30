@@ -12,7 +12,7 @@
 #define COMBO_TERM    25
 
 // Both?
-// #define PERMISSIVE_HOLD
+#define PERMISSIVE_HOLD
 #define IGNORE_MOD_TAP_INTERRUPT
 
 // Per key?

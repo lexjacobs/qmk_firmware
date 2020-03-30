@@ -11,6 +11,7 @@ enum planck_layers {
   _LOWER,
   _RAISE,
   _ADJUST,
+  _STENO,
 };
 
 #define LOWER MO(_LOWER)
@@ -158,7 +159,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 /* ## Adjust (Lower and Raise)
  * ## ,------+------+------+------+------.          ,------+------+------+------+------.
- * ## |      |      |      |      |      |          |      |      |      |      |      |
+ * ## |      |      |      |Steno |      |          |      |      |      |      |      |
  * ## |      |      |      |      |      |          |      |      |      |      |      |
  * ## |------+------+------+------+------|          +------+------+------+------+------|
  * ## |      |      |Scrn  |Talon |      |          |      | IDEs |      |      |      |
@@ -172,10 +173,32 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ##               `------+------+------'          `------+------+------'
  */
   [_ADJUST] = LAYOUT_planck_grid(
-      KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, 
-      KC_NO, KC_NO, HYPR(KC_BSPACE), HYPR(KC_TAB), KC_NO, KC_NO, HYPR(KC_T), KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, 
+      KC_NO, KC_NO, KC_NO, TO(_STENO), KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, 
+      KC_NO, KC_NO, HYPR(KC_BSPACE), HYPR(KC_TAB), KC_NO, KC_NO, KC_NO, HYPR(KC_T), KC_NO, KC_NO, KC_NO, KC_NO, 
       KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, 
       KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, RESET, KC_NO, KC_NO, KC_NO, RESET, KC_NO, KC_NO
+      ),
+
+/* ## Steno (Plover)
+ * ## ,------+------+------+------+------.          ,------+------+------+------+------.
+ * ## |  #   |  #   |  #   |  #   |  #   |          |  #   |  #   |  #   |  #   | Exit |
+ * ## |      |      |      |      |      |          |      |      |      |      |      |
+ * ## |------+------+------+------+------|          +------+------+------+------+------|
+ * ## |  S   |  T   |  P   |  H   |  *   |          |  F   |  P   |  L   |  T   |  D   |
+ * ## |      |      |      |      |      |          |      |      |      |      |      |
+ * ## |------+------+------+------+------|          +------+------+------+------+------|
+ * ## |  S   |  K   |  W   |  R   |  *   |          |  R   |  B   |  G   |  S   |  Z   |
+ * ## |      |      |      |      |      |          |      |      |      |      |      |
+ * ## `------+------+------+------+------|          +------+------+------+------+------'
+ * ##               |  *   |  A   |  O   |          |  E   |  U   |  *   |
+ * ##               |      |      |      |          |      |      |      | 
+ * ##               `------+------+------'          `------+------+------'
+ */
+  [_STENO] = LAYOUT_planck_grid(
+      STN_N1,  STN_N2,  STN_N3,  STN_N4,  STN_N5,  KC_NO, KC_NO, STN_N6,  STN_N7,  STN_N8,  STN_N9,  TO(_BASE),
+      STN_S1,  STN_TL,  STN_PL,  STN_HL,  STN_ST1, KC_NO, KC_NO, STN_FR,  STN_PR,  STN_LR,  STN_TR,  STN_DR,
+      STN_S2,  STN_KL,  STN_WL,  STN_RL,  STN_ST2, KC_NO, KC_NO, STN_RR,  STN_BR,  STN_GR,  STN_SR,  STN_ZR,
+      KC_NO, KC_NO, STN_ST3, STN_A,   STN_O, KC_NO, KC_NO, STN_E, STN_U, STN_ST4, KC_NO, KC_NO
       ),
 };
 
@@ -215,6 +238,12 @@ const uint8_t PROGMEM ledmap[][DRIVER_LED_TOTAL][3] = {
         {HSV_GREEN}, {HSV_GREEN}, {HSV_GREEN}, {HSV_GREEN}, {HSV_GREEN}, {OFF}, {OFF}, {HSV_GREEN}, {HSV_GREEN}, {HSV_GREEN}, {HSV_GREEN}, {HSV_GREEN},
         {OFF}, {OFF}, {HSV_GREEN}, {HSV_GREEN},      {HSV_GREEN},       {OFF}, {HSV_GREEN}, {HSV_GREEN}, {HSV_GREEN}, {OFF}, {OFF}
     },
+    [4] = {
+        {HSV_ORANGE}, {HSV_ORANGE}, {HSV_ORANGE}, {HSV_ORANGE}, {HSV_ORANGE}, {OFF}, {OFF}, {HSV_ORANGE}, {HSV_ORANGE}, {HSV_ORANGE}, {HSV_ORANGE}, {HSV_ORANGE},
+        {HSV_ORANGE}, {HSV_ORANGE}, {HSV_ORANGE}, {HSV_ORANGE}, {HSV_ORANGE}, {OFF}, {OFF}, {HSV_ORANGE}, {HSV_ORANGE}, {HSV_ORANGE}, {HSV_ORANGE}, {HSV_ORANGE},
+        {HSV_ORANGE}, {HSV_ORANGE}, {HSV_ORANGE}, {HSV_ORANGE}, {HSV_ORANGE}, {OFF}, {OFF}, {HSV_ORANGE}, {HSV_ORANGE}, {HSV_ORANGE}, {HSV_ORANGE}, {HSV_ORANGE},
+        {OFF}, {OFF}, {HSV_ORANGE}, {HSV_ORANGE},      {HSV_ORANGE},       {OFF}, {HSV_ORANGE}, {HSV_ORANGE}, {HSV_ORANGE}, {OFF}, {OFF}
+    },
 
 };
 
@@ -250,6 +279,9 @@ void rgb_matrix_indicators_user(void) {
       break;
     case 3:
       set_layer_color(3);
+      break;
+    case 4:
+      set_layer_color(4);
       break;
    default:
     if (rgb_matrix_get_flags() == LED_FLAG_NONE)
