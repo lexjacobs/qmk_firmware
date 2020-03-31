@@ -31,6 +31,7 @@ enum combos {
   UY_ENTER,
   YCLN_BSLASH,
   SLASHDOT_SPACE,
+  ENTERSEMI_LEADER,
 };
 
 const uint16_t PROGMEM qw_combo[] = {KC_Q, KC_W, COMBO_END};
@@ -42,6 +43,7 @@ const uint16_t PROGMEM dot_cma_combo[] = {KC_DOT, KC_COMMA, COMBO_END};
 const uint16_t PROGMEM uy_combo[] = {KC_U, KC_Y, COMBO_END};
 const uint16_t PROGMEM ycln_combo[] = {KC_Y, KC_SCOLON, COMBO_END};
 const uint16_t PROGMEM slashdot_combo[] = {KC_DOT, KC_SLASH, COMBO_END};
+// const uint16_t PROGMEM entersemi_combo[] = {KC_SCOLON, KC_ENTER, COMBO_END};
 
 combo_t key_combos[COMBO_COUNT] = {
   // Left hand
@@ -55,7 +57,8 @@ combo_t key_combos[COMBO_COUNT] = {
   [DOT_CMA_QUOTE] = COMBO(dot_cma_combo, KC_QUOTE),
   [UY_ENTER] = COMBO(uy_combo, KC_ENTER),
   [YCLN_BSLASH] = COMBO(ycln_combo, KC_BSLASH),
-  [SLASHDOT_SPACE] = COMBO(slashdot_combo, KC_SPACE)
+  [SLASHDOT_SPACE] = COMBO(slashdot_combo, KC_SPACE),
+  // [ENTERSEMI_LEADER] = COMBO_ACTION(entersemi_combo)
 };
 /* ## COMBOS
  * ## ,-------------+------+------+------.          ,------+------+-------------+------.
@@ -175,7 +178,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_ADJUST] = LAYOUT_planck_grid(
       KC_NO, KC_NO, KC_NO, TO(_STENO), KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, 
       KC_NO, KC_NO, HYPR(KC_BSPACE), HYPR(KC_TAB), KC_NO, KC_NO, KC_NO, HYPR(KC_T), KC_NO, KC_NO, KC_NO, KC_NO, 
-      KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, 
+      KC_NO, KC_NO, KC_NO, DEBUG, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, 
       KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, RESET, KC_NO, KC_NO, KC_NO, RESET, KC_NO, KC_NO
       ),
 
@@ -292,4 +295,48 @@ void rgb_matrix_indicators_user(void) {
 
 uint32_t layer_state_set_user(uint32_t state) {
     return update_tri_layer_state(state, _LOWER, _RAISE, _ADJUST);
+}
+
+LEADER_EXTERNS();
+
+// void process_combo_event(uint8_t combo_index, bool pressed) {
+//   switch(combo_index) {
+//     case ENTERSEMI_LEADER:
+//       if (pressed) {
+//         uprint("started leading combo\n");
+//         qk_leader_start();
+//       }
+//       break;
+//   }
+// }
+
+// void leader_start(void) {
+//   uprint("started leading\n");
+// }
+
+// void leader_end(void) {
+//   uprint("stopped leading\n");
+// }
+
+void matrix_scan_user(void) {
+  LEADER_DICTIONARY() {
+    leading = false;
+    leader_end();
+    SEQ_ONE_KEY(KC_F) {
+      // Anything you can do in a macro.
+      SEND_STRING("QMK is awesome.");
+    }
+    SEQ_TWO_KEYS(KC_D, KC_D) {
+      SEND_STRING(SS_LCMD("a") SS_LCMD("c"));
+    }
+    SEQ_THREE_KEYS(KC_D, KC_D, KC_S) {
+      SEND_STRING("https://start.duckduckgo.com\n");
+    }
+    SEQ_TWO_KEYS(KC_A, KC_S) {
+      register_code(KC_LGUI);
+      register_code(KC_S);
+      unregister_code(KC_S);
+      unregister_code(KC_LGUI);
+    }
+  }
 }

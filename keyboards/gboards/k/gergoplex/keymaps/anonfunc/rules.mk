@@ -4,6 +4,8 @@
 #----------------------------------------------------------------------------
 # Firmware options
 MOUSEKEY_ENABLE 					= yes
+STENO_ENABLE = yes
+
 
 #Debug options
 VERBOSE 		 							= no

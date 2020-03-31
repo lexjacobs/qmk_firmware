@@ -9,10 +9,13 @@
 #include QMK_KEYBOARD_H
 #include "g/keymap_combo.h"
 
+#include "keymap_steno.h"
+
 #define _BASE 0 // default layer
 #define _LOWER 1
 #define _RAISE 2
 #define _ADJUST 3
+#define _STENO 4
 
 // Blank template at the bottom
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -33,7 +36,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ##               |      |      |Lower |          |Raise |      |      |
  * ##               `------+------+------'          `------+------+------'
  * 
- * Since the board has no lighting, all layers *must* be hold to activate.
+ * Since the board has no lighting, all common layers *must* be hold to activate.
  */
 [_BASE] = LAYOUT_gergoplex(
     KC_Q, KC_W, KC_F, KC_P, KC_B, /**/    KC_J, KC_L, KC_U, KC_Y, KC_SCOLON, 
@@ -93,13 +96,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 /* ## Adjust (Lower and Raise)
  * ## ,------+------+------+------+------.          ,------+------+------+------+------.
- * ## |      |      |      |      |      |          |      |      |      |      |      |
+ * ## |      |      |      |Steno |      |          |      |      |      |      |      |
  * ## |      |      |      |      |      |          |      |      |      |      |      |
  * ## |------+------+------+------+------|          +------+------+------+------+------|
- * ## |      |      |Scrn  |Talon |      |          |      | IDEs |      |      |      |
- * ## |      |      |Saver |      |      |          |      |      |      |      |      |
+ * ## |      |      |Scrn  |Talon |      |          |      | Prev | Vol  | Vol  | Next |
+ * ## |      |      |Saver |      |      |          |      |      | Down | Up   |      |
  * ## |------+------+------+------+------|          +------+------+------+------+------|
- * ## |      |      |      |      |      |          |      |      |      |      |      |
+ * ## |      |      |      |      |      |          |      |      | Mute | Play |      |
  * ## |      |      |      |      |      |          |      |      |      |      |      | 
  * ## `------+------+------+------+------'          `------+------+------+------+------'
  * ##
@@ -109,12 +112,42 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ##               `------+------+------'          `------+------+------'
  */
   [_ADJUST] = LAYOUT_gergoplex(
-      KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, /**/ KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, 
-      KC_NO, KC_NO, HYPR(KC_BSPACE), HYPR(KC_TAB), KC_NO, /**/ KC_NO, HYPR(KC_T), KC_NO, KC_NO,  
-      KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, /**/ KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, 
-      KC_NO, KC_NO, KC_NO, /**/ KC_NO, KC_NO, RESET,
+      KC_NO, KC_NO, KC_NO, TO(_STENO), KC_NO, /**/ KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, 
+      KC_NO, KC_NO, HYPR(KC_BSPACE), HYPR(KC_TAB), KC_NO, /**/ KC_NO, KC_MPRV, KC_VOLD, KC_VOLU, KC_MNXT,
+      KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, /**/ KC_NO, KC_NO, KC_MUTE, KC_MPLY, KC_NO, 
+      KC_NO, KC_NO, KC_NO, /**/ KC_NO, KC_NO, RESET
       ),
+
+/* ## Steno (Plover)
+ * ## ,------+------+------+------+------.          ,------+------+------+------+------.
+ * ## |  #   |  #   |  #   |  #   |  #   |          |  #   |  #   |  #   |  #   | Exit |
+ * ## |      |      |      |      |      |          |      |      |      |      |      |
+ * ## |------+------+------+------+------|          +------+------+------+------+------|
+ * ## |  S   |  T   |  P   |  H   |  *   |          |  F   |  P   |  L   |  T   |  D   |
+ * ## |      |      |      |      |      |          |      |      |      |      |      |
+ * ## |------+------+------+------+------|          +------+------+------+------+------|
+ * ## |  S   |  K   |  W   |  R   |  *   |          |  R   |  B   |  G   |  S   |  Z   |
+ * ## |      |      |      |      |      |          |      |      |      |      |      |
+ * ## `------+------+------+------+------'          `------+------+------+------+------'
+ * ##
+ * ##               ,------+------+------.          ,------+------+------.
+ * ##               |  *   |  A   |  O   |          |  E   |  U   |  *   |
+ * ##               |      |      |      |          |      |      |      | 
+ * ##               `------+------+------'          `------+------+------'
+ */
+  [_STENO] = LAYOUT_gergoplex(
+      STN_N1,  STN_N2,  STN_N3,  STN_N4,  STN_N5,  /**/ STN_N6,  STN_N7,  STN_N8,  STN_N9,  TO(_BASE),
+      STN_S1,  STN_TL,  STN_PL,  STN_HL,  STN_ST1, /**/ STN_FR,  STN_PR,  STN_LR,  STN_TR,  STN_DR,
+      STN_S2,  STN_KL,  STN_WL,  STN_RL,  STN_ST2, /**/ STN_RR,  STN_BR,  STN_GR,  STN_SR,  STN_ZR,
+          STN_ST3, STN_A,   STN_O, /**/ STN_E, STN_U, STN_ST4
+      ),
+
 };
+
+
+void keyboard_post_init_user(void) {
+  steno_set_mode(STENO_MODE_GEMINI); // or STENO_MODE_BOLT
+}
 
 
 uint32_t layer_state_set_user(uint32_t state) {

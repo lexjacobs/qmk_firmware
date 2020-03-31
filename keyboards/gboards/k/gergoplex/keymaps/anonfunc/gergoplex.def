@@ -2,6 +2,9 @@
 
 
 // ## COMBOS
+// ##    ,-------??-----------.                               ,-------- :\n -------.
+// ##    |      ,---- err ----.                               ,---- :_  ----.      |
+// ##    v      v             v                               v             v      v
 // ## ,-------------+------+------+------.          ,------+------+-------------+------.
 // ## |  Backtick   |      |      |      |          |      |      |   Enter     |      |
 // ## |      |     Esc     |      |      |          |      |      |      |  Backslash  |
@@ -12,17 +15,42 @@
 // ## |      |     Tab     |      |      |          |      |      |    Quote    |      |
 // ## |    Shift    |      |      |      |          |      |    Minus    |    Space    |
 // ## `------+------+------+------+------'          `------+------+------+------+------'
+// ##     ^      ^             ^                              ^             ^       ^
+// ##     |      `----cmd tab--'                              `---  :=  ----'       |
+// ##     `----- cmd tick -----'                              `-----------  ->  ----' 
+// ##
 // ##
 // ##               ,------+------+------.          ,------+------+------.
 // ##               |      |      |      |          |      |      |      | 
 // ##               |      |      |      |          |      |      |      | 
 // ##               '------+------+------'          `------+------+------'
+// ## 
+//  More combos?
+//  ,-------------+------+------+------.          ,------+------+-------------+------.
+//  |      |      |      |      |      |          |      |      |      |      |      |
+//  |      |      |      |      |      |          |      |      |      |      |      |
+//  |------+------+------+------+------|          +------+------+------+------+------|
+//  |      |      |      |      |      |          |      |      |      |      |      |
+//  |      |      |      |      |      |          |      |      |      |      |      |
+//  |------+------+------+------+------|          +------+------+------+------+------|
+//  |      |      |      |      |      |          |      |      |      |      |      |
+//  |      |      |      |      |      |          |      |      |      |      |      |
+//  `------+------+------+------+------'          `------+------+------+------+------'
+//  
+//                ,------+------+------.          ,------+------+------.
+//                |      |      |      |          |      |      |      | 
+//                |      |      |      |          |      |      |      | 
+//                '------+------+------'          `------+------+------'
 
 // Left hand
 COMB(qw_combo, KC_GRAVE, KC_Q, KC_W)
 COMB(wf_combo, KC_ESC, KC_W, KC_F)
 COMB(xc_combo, KC_TAB, KC_X, KC_C)
 COMB(zx_combo, KC_LSHIFT, KC_Z, KC_X)
+// Left hand nav?  Use amethyst commands instead?
+COMB(xd_combo, LCMD(KC_TAB), KC_X, KC_D)
+COMB(zd_combo, LCMD(KC_GRAVE), KC_Z, KC_D)
+SUBS(wp_combo, "if err != nil {\nreturn err"SS_TAP(X_DOWN)SS_TAP(X_DOWN)"", KC_W, KC_P)
 
 // Right hand
 COMB(hcma_combo, KC_MINUS, KC_H, KC_COMMA)
@@ -30,6 +58,10 @@ COMB(dot_cma_combo, KC_QUOTE, KC_DOT, KC_COMMA)
 COMB(uy_combo, KC_ENTER, KC_U, KC_Y)
 COMB(ycln_combo, KC_BSLASH, KC_Y, KC_SCOLON)
 COMB(slashdot_combo, KC_SPACE, KC_SLASH, KC_DOT)
-
+// Right hand symbols?
+SUBS(arrow, " -> ", KC_H, KC_SLASH)
+SUBS(assign, " := ", KC_H, KC_DOT)
+SUBS(coalgap, ": ", KC_L, KC_Y)
+SUBS(coalret, ":\n", KC_L, KC_SCOLON)
 
 // SUBS(pasta, "I'd just like to interject for a moment.", KC_H, KC_J, KC_K, KC_L)

@@ -8,6 +8,7 @@
 
 #define ENCODER_RESOLUTION 4
 
+#define LEADER_TIMEOUT    1000
 #define TAPPING_TERM    200
 #define COMBO_TERM    25
 
