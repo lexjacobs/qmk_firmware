@@ -15,9 +15,9 @@
 // ## |      |     Tab     |      |      |          |      |      |    Quote    |      |
 // ## |    Shift    |      |      |      |          |      |    Minus    |    Space    |
 // ## `------+------+------+------+------'          `------+------+------+------+------'
-// ##     ^      ^             ^                              ^             ^       ^
-// ##     |      `----cmd tab--'                              `---  :=  ----'       |
-// ##     `----- cmd tick -----'                              `-----------  ->  ----' 
+// ##     ^      ^              ^                              ^             ^       ^
+// ##     |      `-focus screen-'                              `---  :=  ----'       |
+// ##     `--- swap screen  ----'                              `-----------  ->  ----' 
 // ##
 // ##
 // ##               ,------+------+------.          ,------+------+------.
@@ -48,8 +48,8 @@ COMB(wf_combo, KC_ESC, KC_W, KC_F)
 COMB(xc_combo, KC_TAB, KC_X, KC_C)
 COMB(zx_combo, KC_LSHIFT, KC_Z, KC_X)
 // Left hand nav?  Use amethyst commands instead?
-COMB(xd_combo, LCMD(KC_TAB), KC_X, KC_D)
-COMB(zd_combo, LCMD(KC_GRAVE), KC_Z, KC_D)
+COMB(xd_combo, LALT(LSFT(KC_N)), KC_X, KC_D)
+COMB(zd_combo, LCTL(LALT(LSFT(KC_H))), KC_Z, KC_D)
 SUBS(wp_combo, "if err != nil {\nreturn err"SS_TAP(X_DOWN)SS_TAP(X_DOWN)"", KC_W, KC_P)
 
 // Right hand
