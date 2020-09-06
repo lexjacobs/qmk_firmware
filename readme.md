@@ -20,7 +20,7 @@ make planck/ez:lexjacobs_miryoku:flash
 
 For updaing / flashing gergoplex:
 ```
-git checkout germ
+git checkout gboards
 make git-submodule
 make gboards/k/gergoplex:lexjacobs:dfu
 ```
