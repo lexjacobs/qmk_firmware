@@ -9,24 +9,6 @@ All keyboards are under keyboards/gboards/k and can be built and flashed with th
 
 `make gboards/k/keyboardname:default:dfu`
 
-## Fork-specific notes:
-
-for adding another fork/branch:
-```
-# example using zsa
-git remote add zsa https://github.com/zsa/qmk_firmware.git
-git fetch --all
-git checkout -B branchname zsa/master
-git push -u zsa branchname
-```
-
-For updating / flashing gergoplex:
-```
-git checkout germ
-make git-submodule
-make gboards/k/gergoplex:lexjacobs:dfu
-```
-
 [![Current Version](https://img.shields.io/github/tag/qmk/qmk_firmware.svg)](https://github.com/qmk/qmk_firmware/tags)
 [![Build Status](https://travis-ci.org/qmk/qmk_firmware.svg?branch=master)](https://travis-ci.org/qmk/qmk_firmware)
 [![Discord](https://img.shields.io/discord/440868230475677696.svg)](https://discord.gg/Uq7gcHh)
