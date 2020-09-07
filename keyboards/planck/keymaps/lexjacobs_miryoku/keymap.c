@@ -3,22 +3,22 @@
 #include "muse.h"
 #endif
 #include "eeprom.h"
-#include "keymap_german.h"
-#include "keymap_nordic.h"
-#include "keymap_french.h"
-#include "keymap_spanish.h"
-#include "keymap_hungarian.h"
-#include "keymap_swedish.h"
-#include "keymap_br_abnt2.h"
-#include "keymap_canadian_multilingual.h"
-#include "keymap_german_ch.h"
-#include "keymap_jp.h"
-#include "keymap_bepo.h"
-#include "keymap_italian.h"
-#include "keymap_slovenian.h"
-#include "keymap_danish.h"
-#include "keymap_norwegian.h"
-#include "keymap_portuguese.h"
+/* #include "keymap_german.h" */
+/* #include "keymap_nordic.h" */
+/* #include "keymap_french.h" */
+/* #include "keymap_spanish.h" */
+/* #include "keymap_hungarian.h" */
+/* #include "keymap_swedish.h" */
+/* #include "keymap_br_abnt2.h" */
+/* #include "keymap_canadian_multilingual.h" */
+/* #include "keymap_german_ch.h" */
+/* #include "keymap_jp.h" */
+/* #include "keymap_bepo.h" */
+/* #include "keymap_italian.h" */
+/* #include "keymap_slovenian.h" */
+/* #include "keymap_danish.h" */
+/* #include "keymap_norwegian.h" */
+/* #include "keymap_portuguese.h" */
 
 #define KC_MAC_UNDO LGUI(KC_Z)
 #define KC_MAC_CUT LGUI(KC_X)
@@ -228,3 +228,28 @@ bool music_mask_user(uint16_t keycode) {
 uint32_t layer_state_set_user(uint32_t state) {
     return update_tri_layer_state(state, _LOWER, _RAISE, _ADJUST);
 }
+
+// BEGIN ADD-ON CODE AFTER ORYX PRODUCED BOILERPLATE
+
+// force layer switch hold on all thumb LayerTap keys only
+bool get_tapping_force_hold(uint16_t keycode, keyrecord_t *record) {
+  switch (keycode) {
+    case LT(5,KC_ESCAPE):
+      return true;
+    case LT(6,KC_BSPACE):
+      return true;
+    case LT(7,KC_TAB):
+      return true;
+    case LT(8,KC_ENTER):
+      return true;
+    case LT(9,KC_SPACE):
+      return true;
+    case LT(10,KC_DELETE):
+      return true;
+    default:
+      return false;
+  }
+}
+
+// END ADD-ON CODE AFTER ORYX PRODUCED BOILERPLATE
+
