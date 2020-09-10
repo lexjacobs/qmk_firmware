@@ -2,6 +2,18 @@
 
 ## Fork-specific notes:
 
+### remotes
+```
+germ    git@github.com:germ/qmk_firmware.git (fetch)
+germ    git@github.com:germ/qmk_firmware.git (push)
+origin  git@github.com:lexjacobs/qmk_firmware.git (fetch)
+origin  git@github.com:lexjacobs/qmk_firmware.git (push)
+upstream        git@github.com:qmk/qmk_firmware.git (fetch)
+upstream        git@github.com:qmk/qmk_firmware.git (push)
+zsa     https://github.com/zsa/qmk_firmware.git (fetch)
+zsa     https://github.com/zsa/qmk_firmware.git (push)
+```
+
 for adding another fork/branch:
 ```
 # example using zsa
