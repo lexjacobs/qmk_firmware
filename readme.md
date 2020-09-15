@@ -2,6 +2,11 @@
 
 ## Fork-specific notes:
 
+```
+make git-submodule
+util/qmk_install.sh
+```
+
 ### remotes
 ```
 germ    git@github.com:germ/qmk_firmware.git (fetch)
