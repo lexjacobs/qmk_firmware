@@ -230,26 +230,23 @@ uint32_t layer_state_set_user(uint32_t state) {
 }
 
 // BEGIN ADD-ON CODE AFTER ORYX PRODUCED BOILERPLATE
-
 // force layer switch hold on all thumb LayerTap keys only
 bool get_tapping_force_hold(uint16_t keycode, keyrecord_t *record) {
-  switch (keycode) {
-    case LT(5,KC_ESCAPE):
-      return true;
-    case LT(6,KC_BSPACE):
-      return true;
-    case LT(7,KC_TAB):
-      return true;
-    case LT(8,KC_ENTER):
-      return true;
-    case LT(9,KC_SPACE):
-      return true;
-    case LT(10,KC_DELETE):
-      return true;
-    default:
-      return false;
-  }
+switch (keycode) {
+case LT(5,KC_ESCAPE):
+return true;
+case LT(6,KC_BSPACE):
+return true;
+case LT(7,KC_TAB):
+return true;
+case LT(8,KC_ENTER):
+return true;
+case LT(9,KC_SPACE):
+return true;
+case LT(10,KC_DELETE):
+return true;
+default:
+return false;
 }
-
+}
 // END ADD-ON CODE AFTER ORYX PRODUCED BOILERPLATE
-
